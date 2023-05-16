@@ -3,6 +3,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     secret_key: str
+    user_secret_key: str
     
     db_host: str
     db_port: int

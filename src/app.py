@@ -1,13 +1,20 @@
 from fastapi import FastAPI
-from sqladmin import Admin
 
-from task_one.urls import router as task_one
-
+from task_one.urls import router as quiz_router
+from task_two.urls import router as users_router
 
 tags_metadata = [
     {
         'name': 'quiz',
         'description': 'Quiz endpoints'
+    },
+    {
+        'name': 'auth',
+        'description': 'authentication and registration'
+    },
+    {
+        'name': 'music',
+        'description': 'music endpoints'
     },
 ]
 
@@ -18,4 +25,5 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
-app.include_router(task_one)
+app.include_router(quiz_router)
+app.include_router(users_router)

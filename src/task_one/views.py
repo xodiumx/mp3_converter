@@ -9,8 +9,8 @@ from .schemas import Quiz
 from .utils import QuizService
 
 router = APIRouter(
-    prefix='/auth',
-    tags=['auth']
+    prefix='',
+    tags=['quiz']
 )
 
 
