@@ -1,0 +1,17 @@
+alembic==1.10.4
+asyncpg==0.27.0
+fastapi==0.95.1
+fastapi-users==11.0.0
+uvicorn==0.22.0
+sqlalchemy==2.0.12
+sqladmin==0.10.3
+SQLAlchemy-ImageAttach==1.1.0
+python-dotenv==1.0.0
+python-multipart==0.0.6
+psycopg2-binary==2.9.6
+passlib==1.7.4
+flake8==5.0.4
+flake8-isort==6.0.0
+flake8-return==1.2.0
+flake8-broken-line==0.6.0
+pep8-naming==0.13.3
