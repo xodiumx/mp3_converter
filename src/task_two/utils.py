@@ -1,7 +1,8 @@
 import os
 import uuid
+from secrets import token_hex
 
-from fastapi import UploadFile, Depends
+from fastapi import UploadFile, Depends, HTTPException, status
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import (
     AuthenticationBackend, CookieTransport, JWTStrategy, )
@@ -40,6 +41,8 @@ fastapi_users = FastAPIUsers[User, uuid.UUID](
     [auth_backend],
 )
 
+current_user = fastapi_users.current_user()
+
 class MusicService:
 
     def __init__(
@@ -55,10 +58,17 @@ class MusicService:
             - Конвертируем его в mp3
             - Удаляем файл wav
         """
-        file_name = file.filename.split(' ')[0]
+        file_name, ext = file.filename.split('.')
+        
+        if ext != 'wav':
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail='Расширение аудиофайла должно быть '
+                                       'формата "wav"')
+
         wav_path = os.path.join(f'media/{file_name}.wav')
         mp3_path = os.path.join(f'media/{file_name}.mp3')
-        ffmpeg_path = os.path.join('static/ffmpeg-6.0-full_build/bin/ffmpeg.exe')
+        ffmpeg_path = os.path.join(
+            'static/ffmpeg-6.0-full_build/bin/ffmpeg.exe')
 
         with open(wav_path, 'wb') as temp_wav:
             temp_wav.write(file.file.read())

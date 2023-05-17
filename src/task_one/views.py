@@ -27,7 +27,6 @@ async def create_quiz(
     - Вопросы создаются пока их количество не уменьшиться до 0.
     - Возвращает последний созданный вопрос.
     """
-    # делать запрос к бд для получения всех id вопросов
     while questions_num != 0:
         endpoint = f'https://jservice.io/api/random?count={questions_num}'
 

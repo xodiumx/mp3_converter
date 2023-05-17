@@ -70,13 +70,13 @@ class AudioFile(Base):
         UUID, ForeignKey('user.id', ondelete='CASCADE')
     )
     filename: Mapped[str] = mapped_column(
-        String, nullable=False
+        String, nullable=False, unique=True,
     )
     file_path: Mapped[str] = mapped_column(
-        String, nullable=False
+        String, nullable=False, unique=True,
     )
     data = mapped_column(
-        BINARY, nullable=False
+        BINARY, nullable=False,
     )
     
 
