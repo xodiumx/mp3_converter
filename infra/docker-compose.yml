@@ -37,7 +37,6 @@ services:
       - backend
   
 
-    
 volumes:
   db_volume:
   static_volume:
