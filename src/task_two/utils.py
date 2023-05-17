@@ -1,5 +1,6 @@
 import os
 import uuid
+import ffmpeg
 
 from fastapi import Depends, HTTPException, UploadFile, status
 from fastapi_users import FastAPIUsers
@@ -70,7 +71,7 @@ class MusicService:
         with open(wav_path, 'wb') as temp_wav:
             temp_wav.write(file.file.read())
 
-        AudioSegment.converter = ffmpeg_path
+        #AudioSegment.converter = ffmpeg_path # for windows 
         audio = AudioSegment.from_wav(wav_path)
         audio.export(mp3_path, format='mp3')
 
