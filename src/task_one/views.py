@@ -27,6 +27,7 @@ async def create_quiz(
     - Вопросы создаются пока их количество не уменьшиться до 0.
     - Возвращает последний созданный вопрос.
     """
+    # делать запрос к бд для получения всех id вопросов
     while questions_num != 0:
         endpoint = f'https://jservice.io/api/random?count={questions_num}'
 
@@ -35,9 +36,9 @@ async def create_quiz(
         except Exception:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                 detail='Упс, непредвиденная ошибочка)')
-
-        response, questions_num = service.create_questions(response.json(), 
-                                                           questions_num)
+        
+        questions, questions_num = await service.create_questions(
+                                        response.json(), questions_num)
         await session.commit()
-    last_created_question = response[-1]
+    last_created_question = questions[-1]
     return Quiz(**service.get_info_about_one(last_created_question))
