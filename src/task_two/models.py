@@ -1,17 +1,14 @@
 import uuid
 
 from fastapi import Depends
-from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
+from fastapi_users.db import (SQLAlchemyBaseUserTableUUID,
+                              SQLAlchemyUserDatabase)
 from fastapi_users_db_sqlalchemy.generics import GUID
-
-from sqlalchemy import (
-    Boolean, BINARY, String, Column, ForeignKey, UUID)
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import BINARY, UUID, Boolean, ForeignKey, String
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from main.db import get_async_session
-
 
 UUID_ID = uuid.UUID
 
@@ -78,7 +75,7 @@ class AudioFile(Base):
     data = mapped_column(
         BINARY, nullable=False,
     )
-    
+
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)

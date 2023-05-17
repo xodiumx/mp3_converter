@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Date
+from sqlalchemy import Date, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -7,7 +7,7 @@ class Base(DeclarativeBase):
 
 
 class QuizModel(Base):
-    
+
     __tablename__ = 'quiz'
 
     pk: Mapped[int] = mapped_column(

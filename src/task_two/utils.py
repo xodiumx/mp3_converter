@@ -1,23 +1,19 @@
 import os
 import uuid
-from secrets import token_hex
 
-from fastapi import UploadFile, Depends, HTTPException, status
+from fastapi import Depends, HTTPException, UploadFile, status
 from fastapi_users import FastAPIUsers
-from fastapi_users.authentication import (
-    AuthenticationBackend, CookieTransport, JWTStrategy, )
-
+from fastapi_users.authentication import (AuthenticationBackend,
+                                          CookieTransport, JWTStrategy)
+from pydub import AudioSegment
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from pydub import AudioSegment
-
-from main.settings import settings
 from main.db import get_async_session
+from main.settings import settings
 
-from .models import User, AudioFile
 from .manage import get_user_manager
-
+from .models import AudioFile, User
 
 SECRET = settings.secret_key
 
@@ -43,14 +39,15 @@ fastapi_users = FastAPIUsers[User, uuid.UUID](
 
 current_user = fastapi_users.current_user()
 
+
 class MusicService:
 
     def __init__(
-        self, 
+        self,
         session: AsyncSession = Depends(get_async_session)
-        ) -> None:
+    ) -> None:
         self.session = session
-    
+
     def wav_to_mp3(self, file: UploadFile) -> dict:
         """
         Конвертация аудиофайла из wav в mp3:
@@ -59,7 +56,7 @@ class MusicService:
             - Удаляем файл wav
         """
         file_name, ext = file.filename.split('.')
-        
+
         if ext != 'wav':
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                 detail='Расширение аудиофайла должно быть '
@@ -76,30 +73,30 @@ class MusicService:
         AudioSegment.converter = ffmpeg_path
         audio = AudioSegment.from_wav(wav_path)
         audio.export(mp3_path, format='mp3')
-        
+
         os.remove(wav_path)
 
         return {'mp3_path': mp3_path, 'file_name': file_name}
 
     def create_audio(
-        self, 
+        self,
         audio_file: dict,
         user_id: uuid.UUID,
-        ) -> dict:
+    ) -> dict:
         with open(audio_file.get('mp3_path'), 'rb') as file:
             audio = AudioFile(
-                user = user_id,
-                file_path = audio_file.get('mp3_path'),
-                filename = audio_file.get('file_name'),
-                data = file.read(),
+                user=user_id,
+                file_path=audio_file.get('mp3_path'),
+                filename=audio_file.get('file_name'),
+                data=file.read(),
             )
             self.session.add(audio)
         return audio
-    
+
     async def get_all_user_audio(
         self,
         user_id: uuid.UUID,
-        ) -> list[AudioFile]:
+    ) -> list[AudioFile]:
         """Функция получения всех записей пользователя."""
         audio = (
             await
@@ -108,17 +105,16 @@ class MusicService:
                 select(AudioFile)
                 .filter_by(
                     user=user_id,
-                    )
                 )
+            )
         )
         return audio.scalars().all()
 
-
     async def get_audio_path(
-        self, 
+        self,
         user_id: uuid.UUID,
         file_id: uuid.UUID,
-        ):
+    ):
         """Функция получения пути до аудиофайла."""
         audio_path = (
             await
@@ -128,7 +124,7 @@ class MusicService:
                 .filter_by(
                     id=file_id,
                     user=user_id,
-                    )
                 )
+            )
         )
         return audio_path.scalars().one().file_path

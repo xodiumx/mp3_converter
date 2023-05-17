@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from fastapi import Depends
-
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -18,7 +17,7 @@ class QuizService:
     async def get_info_about_many(
         self,
         response: list[dict],
-        ) -> list[dict]:
+    ) -> list[dict]:
         """
         Получение информации о нескольких вопросах:
           - принимает объекты вопросов
@@ -36,7 +35,7 @@ class QuizService:
             self.session
             .execute(
                 select(QuizModel.id)
-                )
+            )
         ).all()
         uniques_set = {idx[0] for idx in uniques_questions}
         questions = [
@@ -45,27 +44,27 @@ class QuizService:
                 'question': question.get('question'),
                 'answer': question.get('answer'),
                 'created_at': datetime.strptime(
-                        question.get('created_at'),
-                        '%Y-%m-%dT%H:%M:%S.%f%z')
+                    question.get('created_at'),
+                    '%Y-%m-%dT%H:%M:%S.%f%z')
             }
             for question in response if question.get('id') not in uniques_set
         ]
         return questions, len(questions)
-    
+
     def get_info_about_one(self, question: QuizModel) -> dict:
         """Получение информации об одном вопросе."""
         return {
-                'id': question.id,
-                'question': question.question,
-                'answer': question.answer,
-                'created_at': question.created_at
-            }
+            'id': question.id,
+            'question': question.question,
+            'answer': question.answer,
+            'created_at': question.created_at
+        }
 
     async def create_questions(
-        self, 
-        response: list[dict], 
+        self,
+        response: list[dict],
         questions_num: int
-        ) -> dict:
+    ) -> dict:
         """
         Функция создания вопросов в базе:
         - принимает объекты вопросов и их количество

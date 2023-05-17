@@ -1,6 +1,5 @@
-from sqlalchemy import (
-    Boolean, Column, Date, Integer, MetaData,
-    String, Table, UUID, ForeignKey, LargeBinary)
+from sqlalchemy import (UUID, Boolean, Column, Date, ForeignKey, Integer,
+                        LargeBinary, MetaData, String, Table)
 
 metadata = MetaData()
 
@@ -23,7 +22,7 @@ user = Table(
         'email', String(128), unique=True, nullable=False, index=True,),
     Column(
         'hashed_password', String(128), nullable=False,
-        ),
+    ),
     Column(
         'is_active', Boolean(), default=True, nullable=False,
     ),
