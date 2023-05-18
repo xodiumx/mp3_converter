@@ -113,3 +113,4 @@ CREATE DATABASE tasks;
 ```
 alembic upgrade head
 ```
+### Подробная информация по endpoint-у `/docs`
