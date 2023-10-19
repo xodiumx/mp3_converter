@@ -1,4 +1,4 @@
-# Тестовое задание для компании *bewise.ai*
+# Сonverter into mp3
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-ff033e?style=for-the-badge&logo=fastapi&logoColor=white) ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-000000?style=for-the-badge&logo=python&logoColor=white) ![Pydantic](https://img.shields.io/badge/Pydantic-000000?style=for-the-badge&logo=python&logoColor=white) ![Alembic](https://img.shields.io/badge/Alembic-000000?style=for-the-badge&logo=python&logoColor=white) ![Postgres](https://img.shields.io/badge/postgresql-ff033e?style=for-the-badge&logo=postgresql&logoColor=white)
 
